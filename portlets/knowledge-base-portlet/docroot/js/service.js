@@ -32,6 +32,13 @@ Liferay.Service.registerClass(
 );
 
 Liferay.Service.registerClass(
+	Liferay.Service.KB, "KBComment",
+	{
+		deleteKBComment: true
+	}
+);
+
+Liferay.Service.registerClass(
 	Liferay.Service.KB, "KBTemplate",
 	{
 		addKBTemplate: true,
