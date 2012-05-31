@@ -95,5 +95,23 @@ public class KBCommentServiceSoap {
 		}
 	}
 
+	public static com.liferay.knowledgebase.model.KBCommentSoap updateKBComment(
+		long kbCommentId, long classNameId, long classPK,
+		java.lang.String content, boolean helpful,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.knowledgebase.model.KBComment returnValue = KBCommentServiceUtil.updateKBComment(kbCommentId,
+					classNameId, classPK, content, helpful, serviceContext);
+
+			return com.liferay.knowledgebase.model.KBCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(KBCommentServiceSoap.class);
 }

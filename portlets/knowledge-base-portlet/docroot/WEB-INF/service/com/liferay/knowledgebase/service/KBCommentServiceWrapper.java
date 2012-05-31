@@ -69,6 +69,16 @@ public class KBCommentServiceWrapper implements KBCommentService,
 		return _kbCommentService.deleteKBComment(kbCommentId);
 	}
 
+	public com.liferay.knowledgebase.model.KBComment updateKBComment(
+		long kbCommentId, long classNameId, long classPK,
+		java.lang.String content, boolean helpful,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _kbCommentService.updateKBComment(kbCommentId, classNameId,
+			classPK, content, helpful, serviceContext);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

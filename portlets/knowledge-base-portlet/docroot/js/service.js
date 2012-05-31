@@ -34,7 +34,8 @@ Liferay.Service.registerClass(
 Liferay.Service.registerClass(
 	Liferay.Service.KB, "KBComment",
 	{
-		deleteKBComment: true
+		deleteKBComment: true,
+		updateKBComment: true
 	}
 );
 

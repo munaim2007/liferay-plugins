@@ -40,6 +40,13 @@ public class KBCommentServiceClp implements KBCommentService {
 		_methodName4 = "deleteKBComment";
 
 		_methodParameterTypes4 = new String[] { "long" };
+
+		_methodName5 = "updateKBComment";
+
+		_methodParameterTypes5 = new String[] {
+				"long", "long", "long", "java.lang.String", "boolean",
+				"com.liferay.portal.service.ServiceContext"
+			};
 	}
 
 	public java.lang.String getBeanIdentifier() {
@@ -156,6 +163,54 @@ public class KBCommentServiceClp implements KBCommentService {
 		return (com.liferay.knowledgebase.model.KBComment)ClpSerializer.translateOutput(returnObj);
 	}
 
+	public com.liferay.knowledgebase.model.KBComment updateKBComment(
+		long kbCommentId, long classNameId, long classPK,
+		java.lang.String content, boolean helpful,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] {
+						kbCommentId,
+						
+					classNameId,
+						
+					classPK,
+						
+					ClpSerializer.translateInput(content),
+						
+					helpful,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.knowledgebase.model.KBComment)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -165,4 +220,6 @@ public class KBCommentServiceClp implements KBCommentService {
 	private String[] _methodParameterTypes3;
 	private String _methodName4;
 	private String[] _methodParameterTypes4;
+	private String _methodName5;
+	private String[] _methodParameterTypes5;
 }

@@ -40,6 +40,13 @@ public class KBCommentServiceClpInvoker {
 		_methodName41 = "deleteKBComment";
 
 		_methodParameterTypes41 = new String[] { "long" };
+
+		_methodName42 = "updateKBComment";
+
+		_methodParameterTypes42 = new String[] {
+				"long", "long", "long", "java.lang.String", "boolean",
+				"com.liferay.portal.service.ServiceContext"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -64,6 +71,16 @@ public class KBCommentServiceClpInvoker {
 			return KBCommentServiceUtil.deleteKBComment(((Long)arguments[0]).longValue());
 		}
 
+		if (_methodName42.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes42, parameterTypes)) {
+			return KBCommentServiceUtil.updateKBComment(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3],
+				((Boolean)arguments[4]).booleanValue(),
+				(com.liferay.portal.service.ServiceContext)arguments[5]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -75,4 +92,6 @@ public class KBCommentServiceClpInvoker {
 	private String[] _methodParameterTypes40;
 	private String _methodName41;
 	private String[] _methodParameterTypes41;
+	private String _methodName42;
+	private String[] _methodParameterTypes42;
 }
