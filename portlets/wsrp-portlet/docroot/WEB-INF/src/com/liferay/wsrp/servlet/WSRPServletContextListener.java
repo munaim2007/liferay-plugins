@@ -16,18 +16,18 @@ package com.liferay.wsrp.servlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.ServletContextPostListener;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.wsrp.service.WSRPConsumerPortletLocalServiceUtil;
 import com.liferay.wsrp.util.ExtensionHelperUtil;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class WSRPServletContextListener
-	extends BasePortalLifecycle implements ServletContextListener {
+	extends BasePortalLifecycle implements ServletContextPostListener {
 
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		portalDestroy();
