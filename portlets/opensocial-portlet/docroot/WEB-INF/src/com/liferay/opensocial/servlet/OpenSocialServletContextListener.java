@@ -18,7 +18,6 @@ import com.liferay.opensocial.model.Gadget;
 import com.liferay.opensocial.service.GadgetLocalServiceUtil;
 import com.liferay.opensocial.shindig.util.ShindigUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.servlet.ServletContextPostListener;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Company;
@@ -32,12 +31,13 @@ import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import java.util.List;
 
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
  * @author Michael Young
  */
 public class OpenSocialServletContextListener
-	extends BasePortalLifecycle implements ServletContextPostListener {
+	extends BasePortalLifecycle implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		portalDestroy();
