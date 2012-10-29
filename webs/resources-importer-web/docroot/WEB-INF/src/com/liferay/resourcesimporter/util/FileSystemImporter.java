@@ -447,6 +447,8 @@ public class FileSystemImporter extends BaseImporter {
 
 		String xsl = StringUtil.read(inputStream);
 
+		xsl = replaceFileEntryURL(xsl);
+
 		setServiceContext(fileName);
 
 		JournalTemplate journalTemplate =
@@ -582,25 +584,7 @@ public class FileSystemImporter extends BaseImporter {
 	protected String processJournalArticleContent(String content)
 		throws Exception {
 
-		Matcher matcher = _fileEntryPattern.matcher(content);
-
-		while (matcher.find()) {
-			String fileName = matcher.group(1);
-
-			FileEntry fileEntry = _fileEntries.get(fileName);
-
-			String fileEntryURL = StringPool.BLANK;
-
-			if (fileEntry != null) {
-				fileEntryURL = DLUtil.getPreviewURL(
-					fileEntry, fileEntry.getFileVersion(), null,
-					StringPool.BLANK);
-			}
-
-			content = matcher.replaceFirst(fileEntryURL);
-
-			matcher.reset(content);
-		}
+		content = replaceFileEntryURL(content);
 
 		if (content.contains("<?xml version=\"1.0\"")) {
 			return content;
@@ -623,6 +607,30 @@ public class FileSystemImporter extends BaseImporter {
 		sb.append("</static-content></root>");
 
 		return sb.toString();
+	}
+
+	protected String replaceFileEntryURL(String content) throws Exception {
+		Matcher matcher = _fileEntryPattern.matcher(content);
+
+		while (matcher.find()) {
+			String fileName = matcher.group(1);
+
+			FileEntry fileEntry = _fileEntries.get(fileName);
+
+			String fileEntryURL = StringPool.BLANK;
+
+			if (fileEntry != null) {
+				fileEntryURL = DLUtil.getPreviewURL(
+					fileEntry, fileEntry.getFileVersion(), null,
+					StringPool.BLANK);
+			}
+
+			content = matcher.replaceFirst(fileEntryURL);
+
+			matcher.reset(content);
+		}
+
+		return content;
 	}
 
 	protected void setServiceContext(String name) {
