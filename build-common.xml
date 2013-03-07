@@ -18,7 +18,7 @@
 	</condition>
 
 	<property name="ivy.home" value="${user.home}/.ivy" />
-	<property name="ivy.install.version" value="2.2.0" />
+	<property name="ivy.install.version" value="2.3.0" />
 	<property name="ivy.jar.dir" value="${ivy.home}/lib" />
 
 	<script language="javascript">
