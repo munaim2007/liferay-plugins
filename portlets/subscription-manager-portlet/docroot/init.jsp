@@ -28,6 +28,8 @@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.util.*" %><%@
 page import="com.liferay.portal.model.Subscription" %><%@
+page import="com.liferay.subscriptionmanager.search.AssetDisplayTerms" %><%@
+page import="com.liferay.subscriptionmanager.search.AssetSearch" %><%@
 page import="com.liferay.portal.security.permission.ResourceActionsUtil" %><%@
 page import="com.liferay.portal.service.SubscriptionLocalServiceUtil" %><%@
 page import="com.liferay.portal.util.PortalUtil" %><%@

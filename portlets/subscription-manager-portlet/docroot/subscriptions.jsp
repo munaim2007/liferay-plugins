@@ -1,5 +1,8 @@
 <%@ page import="com.liferay.portal.model.User" %>
 <%@ page import="com.liferay.portal.service.UserLocalServiceUtil" %>
+<%@ page import="com.liferay.portlet.asset.model.AssetEntry" %>
+<%@ page import="com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.util.PortalUtil" %>
 
 <%--
 /**
@@ -18,53 +21,54 @@
 --%>
 
 <%
-long filterBySubscriptionId = ParamUtil.getLong(request, "filterBySubscriptionId");
+long filterByClassNameId = ParamUtil.getLong(request, "filterByClassNameId");
+long filterByClassPK = ParamUtil.getLong(request, "filterByClassPK");
 long filterBySubscriberId = ParamUtil.getLong(request, "filterBySubscriberId");
 
 String filterBySubscriptionIdTitle = StringPool.BLANK;
 String filterBySubscriberIdTitle = StringPool.BLANK;
 
-if (filterBySubscriptionId > 0) {
-	Subscription filterBySubscription = SubscriptionLocalServiceUtil.fetchSubscription(filterBySubscriptionId);
+if (filterByClassPK > 0) {
+	String filterByClassName = PortalUtil.getClassName(filterByClassNameId);
 
-	AssetRenderer assetRenderer = SubscriptionManagerUtil.getAssetRenderer(filterBySubscription.getClassName(), filterBySubscription.getClassPK());
+	AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(filterByClassName, filterByClassPK);
 
-	filterBySubscriptionIdTitle = SubscriptionManagerUtil.getTitleText(locale, filterBySubscription.getClassName(), filterBySubscription.getClassPK(), ((assetRenderer != null) ? assetRenderer.getTitle(locale) : null));
+	filterBySubscriptionIdTitle = assetEntry.getTitle(locale);
 }
-
-if (filterBySubscriberId > 0) {
+else if (filterBySubscriberId > 0) {
 	User filterByUser = UserLocalServiceUtil.fetchUser(filterBySubscriberId);
 
 	filterBySubscriberIdTitle = filterByUser.getFullName();
 }
 %>
 
-<liferay-util:buffer var="removeFilterBySubscriptionId">
-	<c:if test="<%= filterBySubscriptionId > 0 %>">
+<liferay-util:buffer var="removeFilterByAsset">
+	<c:if test="<%= filterByClassPK > 0 %>">
 		<span class="asset-entry">
 			<%= filterBySubscriptionIdTitle %>
 
-			<portlet:renderURL var="viewURLWithoutFilterBySubscriptionId">
-				<portlet:param name="filterBySubscriptionId" value="0" />
+			<portlet:renderURL var="viewURLWithoutFilterByAsset">
+				<portlet:param name="filterByClassNameId" value="0" />
+				<portlet:param name="filterByClassPK" value="0" />
 			</portlet:renderURL>
 
-			<a href="<%= viewURLWithoutFilterBySubscriptionId %>" title="<liferay-ui:message key="remove" />">
+			<a href="<%= viewURLWithoutFilterByAsset %>" title="<liferay-ui:message key="remove" />">
 				<span class="aui-icon aui-icon-close aui-textboxlistentry-close"></span>
 			</a>
 		</span>
 	</c:if>
 </liferay-util:buffer>
 
-<liferay-util:buffer var="removeFilterBySubscriberId">
+<liferay-util:buffer var="removeFilterBySubscriber">
 	<c:if test="<%= filterBySubscriberId > 0 %>">
 		<span class="asset-entry">
 			<%= filterBySubscriberIdTitle %>
 
-			<liferay-portlet:renderURL var="viewURLWithoutFilterBySubscriberId">
+			<liferay-portlet:renderURL var="viewURLWithoutFilterBySubscriber">
 				<liferay-portlet:param name="filterBySubscriberId" value="0" />
 			</liferay-portlet:renderURL>
 
-			<a href="<%= viewURLWithoutFilterBySubscriberId %>" title="<liferay-ui:message key="remove" />">
+			<a href="<%= viewURLWithoutFilterBySubscriber %>" title="<liferay-ui:message key="remove" />">
 				<span class="aui-icon aui-icon-close aui-textboxlistentry-close"></span>
 			</a>
 		</span>
@@ -72,17 +76,21 @@ if (filterBySubscriberId > 0) {
 </liferay-util:buffer>
 
 <c:choose>
-	<c:when test="<%= filterBySubscriptionId != 0 %>">
+	<c:when test="<%= filterByClassPK > 0 %>">
 		<h1 class="taglib-categorization-filter entry-title">
-			<liferay-ui:message arguments="<%= removeFilterBySubscriptionId %>" key='<%= "filter-by-x" %>' />
+			<liferay-ui:message arguments="<%= removeFilterByAsset %>" key='<%= "filter-by-x" %>' />
 		</h1>
 	</c:when>
-	<c:when test="<%= filterBySubscriberId != 0 %>">
+	<c:when test="<%= filterBySubscriberId > 0 %>">
 		<h1 class="taglib-categorization-filter entry-title">
-			<liferay-ui:message arguments="<%= removeFilterBySubscriberId %>" key='<%= "filter-by-x" %>' />
+			<liferay-ui:message arguments="<%= removeFilterBySubscriber %>" key='<%= "filter-by-x" %>' />
 		</h1>
 	</c:when>
 </c:choose>
+
+<input class="aui-button-input" onClick="var selectAssetWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/select_asset.jsp" /></portlet:renderURL>', 'select_asset', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); selectAssetWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+
+<input class="aui-button-input" onClick="var selectUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/select_user.jsp" /></portlet:renderURL>', 'select_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); selectUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 
 <aui:form method="post" name="fm">
 	<liferay-ui:search-container
@@ -90,11 +98,9 @@ if (filterBySubscriberId > 0) {
 		iteratorURL="<%= portletURL %>"
 		rowChecker="<%= new RowChecker(renderResponse) %>"
 	>
-		<%@ include file="/subscription_search.jspf" %>
-
 		<liferay-ui:search-container-results
-			results="<%= SubscriptionManagerUtil.getSubscriptions(filterBySubscriptionId, themeDisplay.getCompanyId(), filterBySubscriberId, searchContainer.getStart(), searchContainer.getEnd(), null) %>"
-			total="<%= SubscriptionManagerUtil.getSubscriptionsCount(filterBySubscriptionId, themeDisplay.getCompanyId(), filterBySubscriberId) %>"
+			results="<%= SubscriptionManagerUtil.getSubscriptions(themeDisplay.getCompanyId(), filterBySubscriberId, filterByClassNameId, filterByClassPK, searchContainer.getStart(), searchContainer.getEnd(), null) %>"
+			total="<%= SubscriptionManagerUtil.getSubscriptionsCount(themeDisplay.getCompanyId(), filterBySubscriberId, filterByClassNameId, filterByClassPK) %>"
 		/>
 
 			<liferay-ui:search-container-row
@@ -155,8 +161,8 @@ if (filterBySubscriberId > 0) {
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />selectSubscription(filterBySubscriptionId) {
-		location.href = Liferay.Util.addParams('<portlet:namespace />filterBySubscriptionId=' + filterBySubscriptionId, '<portlet:renderURL><portlet:param name="mvcPath" value="/view.jsp" /></portlet:renderURL>');;
+	function <portlet:namespace />selectAsset(filterByClassNameId, filterByClassPK) {
+		location.href = Liferay.Util.addParams('<portlet:namespace />filterByClassNameId=' + filterByClassNameId + '&<portlet:namespace />filterByClassPK=' + filterByClassPK, '<portlet:renderURL><portlet:param name="mvcPath" value="/view.jsp" /></portlet:renderURL>');
 	}
 
 	function <portlet:namespace />selectSubscriber(filterBySubscriberId) {
