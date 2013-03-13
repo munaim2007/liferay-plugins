@@ -50,96 +50,46 @@ portletURL.setParameter("mvcPath", "/select_asset.jsp");
 %>
 
 <form action="<%= portletURL.toString() %>" method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
-	<liferay-ui:search-toggle
-		buttonLabel="search"
-		displayTerms="<%= displayTerms %>"
-		id="toggle_id_users_admin_user_search"
+	<liferay-ui:search-container
+		rowChecker="<%= userGroupGroupChecker %>"
+		searchContainer="<%= userGroupSearch %>"
 	>
-		<aui:input name="<%= displayTerms.TITLE %>" size="20" value="<%= displayTerms.getTitle() %>" />
+		<liferay-ui:search-toggle
+			buttonLabel="search"
+			displayTerms="<%= displayTerms %>"
+			id="toggle_id_users_admin_user_search"
+		>
+			<aui:input name="<%= displayTerms.TITLE %>" size="20" value="<%= displayTerms.getTitle() %>" />
 
-		<aui:input name="<%= displayTerms.DESCRIPTION %>" size="20" value="<%= displayTerms.getDescription() %>" />
+			<aui:input name="<%= displayTerms.DESCRIPTION %>" size="20" value="<%= displayTerms.getDescription() %>" />
 
-		<aui:input name="<%= displayTerms.USER_NAME %>" size="20" value="<%= displayTerms.getUserName() %>" />
-	</liferay-ui:search-toggle>
+			<aui:input name="<%= displayTerms.USER_NAME %>" size="20" value="<%= displayTerms.getUserName() %>" />
+		</liferay-ui:search-toggle>
 
-	<%
-	Hits results = null;
+		<liferay-ui:search-container-results>
+			<%
+			if (searchTerms.isAdvancedSearch()) {
+				results = SubscriptionManagerUtil.getAssetEntries(themeDisplay.getCompanyId(), 0, searchTerms.getTitle(), searchContainer.getStart(), searchContainer.getEnd(), null);
+				total = SubscriptionManagerUtil.getAssetEntriesCount(themeDisplay.getCompanyId(), 0, searchTerms.getTitle());
+			}
+			else {
+				results = SubscriptionManagerUtil.getAssetEntries(themeDisplay.getCompanyId(), 0, searchTerms.getTitle(), searchContainer.getStart(), searchContainer.getEnd(), null);
+				total = SubscriptionManagerUtil.getAssetEntriesCount(themeDisplay.getCompanyId(), 0, searchTerms.getTitle());
+			}
+			%>
+		</liferay-ui:search-container-results>
 
-	if (searchTerms.isAdvancedSearch()) {
-		results = SubscriptionManagerUtil.getAssetEntries(themeDisplay.getCompanyId()), null, searchTerms.getTitle(), WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(), searchContainer.getEnd(), null);
-	}
-	else {
-		results = SubscriptionManagerUtil.getAssetEntries(themeDisplay.getCompanyId()), null, searchTerms.getTitle(), WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(), searchContainer.getEnd(), null);
-	}
-
-	int total = results.getLength();
-
-	searchContainer.setTotal(total);
-
-	List resultRows = searchContainer.getResultRows();
-
-	for (int i = 0; i < results.getDocs().length; i++) {
-		Document doc = results.doc(i);
-
-		ResultRow row = new ResultRow(doc, i, i);
-
-		String entryClassName = GetterUtil.getString(doc.get(Field.ENTRY_CLASS_NAME));
-		long assetEntryId = 0;
-
-		if (entryClassName.equals(JournalArticle.class.getName())) {
-			assetEntryId = GetterUtil.getLong(doc.get(Field.ROOT_ENTRY_CLASS_PK));
-		}
-		else {
-			assetEntryId = GetterUtil.getLong(doc.get(Field.ENTRY_CLASS_PK));
-		}
-
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry("com.liferay.portlet.messageboards.model.MBThread", assetEntryId);
-
-		System.out.println(doc);
-		if (assetEntry == null) {
-			return;
-		}
-		assetEntry = assetEntry.toEscapedModel();
-
-		StringBundler sb = new StringBundler(8);
-
-		sb.append("javascript:opener.");
-		sb.append(renderResponse.getNamespace());
-		sb.append("selectAsset('");
-		sb.append(assetEntry.getClassNameId());
-		sb.append("', '");
-		sb.append(assetEntryId);
-		sb.append("'); window.close();");
-
-		String rowHREF = sb.toString();
-
-		Group group = GroupLocalServiceUtil.getGroup(assetEntry.getGroupId());
-
-		// Title
-
-		row.addText(assetEntry.getTitle(locale), rowHREF);
-
-		// Description
-
-		row.addText(HtmlUtil.stripHtml(HtmlUtil.unescape(assetEntry.getDescription(locale))), rowHREF);
-
-		// Asset type
-
-		row.addText(ResourceActionsUtil.getModelResource(locale, entryClassName));
-
-		// User name
-
-		row.addText(PortalUtil.getUserName(assetEntry), rowHREF);
-
-		// Scope
-
-		row.addText(group.getDescriptiveName(locale), rowHREF);
-
-		// Add result row
-
-		resultRows.add(row);
-	}
-	%>
-
-	<liferay-ui:search-iterator searchContainer="<%= searchContainer %>" />
+		<liferay-ui:search-container-row
+			className="com.liferay.portlet.asset.model.AssetEntry"
+			escapedModel="<%= true %>"
+			keyProperty="assetEntryId"
+			modelVar="assetEntry"
+		>
+			<liferay-ui:search-container-column-text
+				name="title"
+				orderable="<%= true %>"
+				property="title"
+			/>
+		</liferay-ui:search-container-row>
+	</liferay-ui:search-container>
 </form>
