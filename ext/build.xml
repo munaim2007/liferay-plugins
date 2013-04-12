@@ -43,7 +43,7 @@
 		<replace dir="${ext.plugin.dir}">
 			<replacefilter token="@ext.display.name@" value="${ext.display.name}" />
 			<replacefilter token="@ext.name@" value="${ext.name}" />
-			<replacefilter token="@plugin.basedir@" value="${plugin.basedir}" />
+			<replacefilter token="@plugin.common.dir@" value="${plugin.common.dir}" />
 		</replace>
 	</target>
 

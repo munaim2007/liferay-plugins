@@ -44,7 +44,7 @@
 		<mkdir dir="${theme.dir}/docroot/WEB-INF/src/resources-importer/journal/templates" />
 
 		<replace dir="${theme.dir}">
-			<replacefilter token="@plugin.basedir@" value="${plugin.basedir}" />
+			<replacefilter token="@plugin.common.dir@" value="${plugin.common.dir}" />
 			<replacefilter token="@theme.display.name@" value="${theme.display.name}" />
 			<replacefilter token="@theme.name@" value="${theme.name}" />
 		</replace>

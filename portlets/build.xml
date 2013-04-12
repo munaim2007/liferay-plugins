@@ -235,7 +235,7 @@ portal-dependency-jars=vaadin.jar</echo>
 		</if>
 
 		<replace dir="${portlet.dir}">
-			<replacefilter token="@plugin.basedir@" value="${plugin.basedir}" />
+			<replacefilter token="@plugin.common.dir@" value="${plugin.common.dir}" />
 			<replacefilter token="@portlet.display.name@" value="${portlet.display.name}" />
 			<replacefilter token="@portlet.java.class.name@" value="${portlet.java.class.name}" />
 			<replacefilter token="@portlet.java.package.name@" value="${portlet.java.package.name}" />

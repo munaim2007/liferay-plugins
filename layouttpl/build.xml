@@ -45,7 +45,7 @@
 			<replacefilter token="@layouttpl.display.name@" value="${layouttpl.display.name}" />
 			<replacefilter token="@layouttpl.name@" value="${layouttpl.name}" />
 			<replacefilter token="@layouttpl.template.name@" value="${layouttpl.template.name}" />
-			<replacefilter token="@plugin.basedir@" value="${plugin.basedir}" />
+			<replacefilter token="@plugin.common.dir@" value="${plugin.common.dir}" />
 		</replace>
 
 		<move

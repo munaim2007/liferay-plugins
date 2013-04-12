@@ -7,10 +7,10 @@
 	<if>
 		<equals arg1="${basedir}" arg2="{user.dir}" />
 		<then>
-			<property name="plugin.basedir" value=".." />
+			<property name="plugin.common.dir" value=".." />
 		</then>
 		<else>
-			<property name="plugin.basedir" value="${basedir}" />
+			<property name="plugin.common.dir" value="${basedir}" />
 		</else>
 	</if>
 

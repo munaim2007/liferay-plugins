@@ -40,7 +40,7 @@
 		<replace dir="${hook.dir}">
 			<replacefilter token="@hook.display.name@" value="${hook.display.name}" />
 			<replacefilter token="@hook.name@" value="${hook.name}" />
-			<replacefilter token="@plugin.basedir@" value="${plugin.basedir}" />
+			<replacefilter token="@plugin.common.dir@" value="${plugin.common.dir}" />
 		</replace>
 	</target>
 </project>
