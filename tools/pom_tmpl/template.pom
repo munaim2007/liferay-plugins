@@ -5,35 +5,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>${ivy.pom.groupId}</groupId>
 	<artifactId>${ivy.pom.artifactId}</artifactId>
-	<packaging>${ivy.pom.packaging}</packaging>
-	<version>${ivy.pom.version}</version>
-	<name>${ivy.pom.name}</name>
 	<description>${ivy.pom.description}</description>
-	<url>${ivy.pom.url}</url>
 	<developers>
 		<developer>
-			<name>${ivy.pom.developer}</name>
-			<organization>Liferay, Inc.</organization>
-			<organizationUrl>http://www.liferay.com</organizationUrl>
+			<name>${ivy.pom.developer.name}</name>
+			<organization>${ivy.pom.developer.organization}</organization>
+			<organizationUrl>${ivy.pom.developer.organizationUrl}</organizationUrl>
 		</developer>
 	</developers>
+	<groupId>${ivy.pom.groupId}</groupId>
 	<licenses>
 		<license>
-			<name>LGPL 2.1</name>
-			<url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</url>
+			<name>${ivy.pom.license.name}</name>
+			<url>${ivy.pom.license.url}</url>
 		</license>
 	</licenses>
+	<modelVersion>4.0.0</modelVersion>
+	<name>${ivy.pom.name}</name>
+	<packaging>${ivy.pom.packaging}</packaging>
 	<scm>
-		<connection>scm:git:https://github.com/liferay/liferay-plugins</connection>
-		<developerConnection>scm:git:https://github.com/liferay/liferay-plugins</developerConnection>
-		<url>scm:git:https://github.com/liferay/liferay-plugins</url>
+		<connection>${ivy.pom.scm.connection}</connection>
+		<developerConnection>${ivy.pom.scm.developerConnection}</developerConnection>
+		<url>${ivy.pom.scm.url}</url>
 	</scm>
+	<url>${ivy.pom.url}</url>
+	<version>${ivy.pom.version}</version>
 </project>

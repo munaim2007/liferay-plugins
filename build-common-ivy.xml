@@ -97,11 +97,11 @@
 			transitive="false"
 		/>
 
+		<property name="ivy.pom.description" value="${plugin.name}" />
+		<property name="ivy.pom.name" value="${plugin.name}" />
+
 		<property name="plugin.version.qualifier" value="" />
 
-		<property name="ivy.pom.description" value="${plugin.name}" />
-		<property name="ivy.pom.developer" value="Brian Wing Shun Chan" />
-		<property name="ivy.pom.name" value="${plugin.name}" />
 		<property name="ivy.pom.version" value="${plugin.full.version}${plugin.version.qualifier}" />
 
 		<ivy:makepom
